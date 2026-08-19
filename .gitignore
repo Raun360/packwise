@@ -1,0 +1,15 @@
+node_modules
+dist
+.DS_Store
+*.local
+*.zip
+
+# Environment config — .env.local holds the real GA4 Measurement ID.
+# .env.example is the committed template and stays tracked.
+.env
+.env.local
+.env.*.local
+
+# Unprocessed source images kept for re-cropping (public/ has the built assets)
+creator-source.jpg
+logo-source.jpeg

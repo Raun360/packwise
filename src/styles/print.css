@@ -1,0 +1,136 @@
+/* ============================================================
+   Packwise — Print / Save as PDF
+   The printed sheet is a genuine checklist: boxes you can tick
+   with a pen, no interface furniture.
+   ============================================================ */
+
+@media print {
+  @page { margin: 14mm 12mm; }
+
+  html, body {
+    background: #fff !important;
+    color: #000;
+    font-size: 10.5pt;
+  }
+
+  /* Hide everything that only makes sense on screen */
+  .site-header,
+  .mobile-bar,
+  .results-toolbar,
+  .rail,
+  .packlight-card,
+  .forgot-card,
+  .why-btn,
+  .category-chevron,
+  .overlay,
+  .toast,
+  .no-print,
+  .step-actions,
+  .done-banner { display: none !important; }
+
+  .results { padding: 0 !important; }
+  .shell, .shell-narrow { max-width: none; padding: 0; }
+  .results-layout { display: block !important; }
+
+  .print-only { display: block !important; }
+
+  /* Header block */
+  .print-head {
+    border-bottom: 1.5pt solid #000;
+    padding-bottom: 8pt;
+    margin-bottom: 12pt;
+  }
+  .print-head h1 {
+    font-size: 20pt;
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    margin-bottom: 3pt;
+  }
+  .print-head .meta { font-size: 9.5pt; color: #333; }
+  .print-head .meta span + span::before { content: ' · '; }
+  .print-head .brandline {
+    float: right;
+    font-size: 8.5pt;
+    color: #666;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* Two columns of checklist on paper */
+  .category-stack { column-count: 2; column-gap: 10mm; }
+
+  .category {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 0 9pt !important;
+    background: none !important;
+  }
+  .category-head {
+    padding: 0 0 3pt !important;
+    border-bottom: 0.5pt solid #999;
+    margin-bottom: 4pt;
+    background: none !important;
+  }
+  .category-title h2 { font-size: 10.5pt; font-weight: 700; }
+  .category-title p,
+  .category-count { display: none !important; }
+
+  .category-items { border: none !important; }
+
+  .item {
+    padding: 1.6pt 0 !important;
+    border: none !important;
+    background: none !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    align-items: center !important;
+  }
+  .item + .item { border: none !important; }
+
+  .checkbox {
+    width: 9pt !important;
+    height: 9pt !important;
+    border: 0.75pt solid #000 !important;
+    background: #fff !important;
+    border-radius: 1.5pt !important;
+    margin-top: 0 !important;
+  }
+  .checkbox svg { display: none !important; }
+  .item.packed .checkbox { background: #000 !important; }
+
+  .item-name {
+    font-size: 9.5pt !important;
+    color: #000 !important;
+    text-decoration: none !important;
+  }
+  .item.packed .item-name { text-decoration: line-through !important; color: #555 !important; }
+  .item-qty { font-size: 8.5pt !important; color: #444 !important; }
+  .item-actions { display: none !important; }
+  .why-panel { display: none !important; }
+
+  /* Priority shown as a mark rather than colour */
+  .badge {
+    border: none !important;
+    background: none !important;
+    padding: 0 !important;
+    height: auto !important;
+    font-size: 7.5pt !important;
+    color: #555 !important;
+  }
+  .badge .dot { display: none !important; }
+  .badge.recommended, .badge.optional { display: none !important; }
+  .badge.essential::before { content: '★ '; }
+
+  .print-foot {
+    margin-top: 12pt;
+    padding-top: 6pt;
+    border-top: 0.5pt solid #999;
+    font-size: 8pt;
+    color: #666;
+    column-span: all;
+  }
+}
+
+.print-only { display: none; }

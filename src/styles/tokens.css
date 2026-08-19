@@ -1,0 +1,140 @@
+/* ============================================================
+   Packwise — Design Tokens
+
+   Palette after the Steerwise system: a deep teal carrying the dark
+   surfaces, a mid teal for secondary weight, and one signature
+   bright green doing all the positive work.
+
+   The page is white, so cards are separated by a hairline border and
+   a soft teal-tinted shadow rather than by a change of tone.
+
+   One geometric sans (Outfit). Hierarchy comes from weight and size.
+   ============================================================ */
+
+:root {
+  /* ---- Surface & ink -------------------------------------- */
+  --ivory:          #FFFFFF;   /* page ground */
+  --ivory-deep:     #F1F3EF;   /* recessed fills, chip tracks */
+  --surface:        #FFFFFF;   /* cards */
+  --surface-sunk:   #F7F8F5;
+
+  --ink:            #11201F;   /* near-black, teal undertone */
+  --ink-2:          #3B4746;   /* strong secondary — 8.9:1 on white */
+  --ink-3:          #5C6968;   /* muted            — 5.9:1 */
+  --ink-4:          #6A7675;   /* faint            — 4.7:1, the AA floor */
+
+  --line:           #E4E7E2;
+  --line-strong:    #CDD2CC;
+  --line-faint:     #EFF1ED;
+
+  /* ---- Brand greens ---------------------------------------
+     Deep teal is the workhorse: buttons, dark tiles, headings.
+     Bright green is the signature but far too light to carry white
+     text, so it always pairs with deep teal on top.               */
+  --deep:           #11413F;   /* Deep Wise Blue */
+  --deep-hover:     #0C3230;
+  --deep-press:     #082725;
+  --deep-ink:       #EAF6E7;   /* text on deep teal */
+
+  --teal:           #22776B;   /* Wise Blue — mid weight */
+  --teal-hover:     #1B6459;
+
+  --bright:         #8ADE7C;   /* Wise Green — the signature note */
+  --bright-hi:      #9AE68D;
+  --bright-ink:     #0E3330;   /* text on bright green */
+
+  --mint:           #DAF4D7;   /* Steer White — soft fills */
+  --mint-softer:    #EEFAEC;
+  --mint-line:      #BCE8B3;
+
+  /* Accent aliases — components read these. */
+  --accent:         #11413F;
+  --accent-hover:   #0C3230;
+  --accent-press:   #082725;
+  --accent-bright:  #8ADE7C;
+  --accent-soft:    #DAF4D7;
+  --accent-softer:  #EEFAEC;
+  --accent-line:    #BCE8B3;
+  --accent-ink:     #11413F;
+
+  /* ---- Semantic priority ----------------------------------
+     Desaturated so they read as signal beside the greens rather
+     than competing with them. All clear 4.5:1 on their own tint. */
+  --essential:      #A03F2A;
+  --essential-soft: #FAE7E1;
+  --essential-line: #EDCCC0;
+
+  --recommended:      #86590F;
+  --recommended-soft: #FAF0DA;
+  --recommended-line: #E9D8AF;
+
+  --optional:       #616B6A;
+  --optional-soft:  #EDEFEC;
+  --optional-line:  #D8DCD7;
+
+  --success:        #22776B;
+  --success-soft:   #DAF4D7;
+  --success-line:   #BCE8B3;
+  --warn:           #86590F;
+
+  /* ---- Radius --------------------------------------------- */
+  --r-xs: 8px;
+  --r-sm: 10px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+  --r-pill: 999px;
+  --r-btn: 16px;      /* standard and large buttons */
+  --r-btn-sm: 10px;   /* small buttons, chips and icon buttons */
+
+  /* ---- Spacing (8px system) ------------------------------- */
+  --s-1: 4px;   --s-2: 8px;   --s-3: 12px;  --s-4: 16px;
+  --s-5: 20px;  --s-6: 24px;  --s-8: 32px;  --s-10: 40px;
+  --s-12: 48px; --s-16: 64px; --s-20: 80px; --s-24: 96px;
+
+  /* ---- Shadows --------------------------------------------
+     Teal-tinted rather than neutral grey. On a white page the border
+     does most of the separating and the shadow only adds lift.     */
+  --sh-xs: 0 1px 2px rgba(17, 65, 63, 0.05);
+  --sh-sm: 0 1px 3px rgba(17, 65, 63, 0.05), 0 1px 2px rgba(17, 65, 63, 0.03);
+  --sh-md: 0 4px 14px rgba(17, 65, 63, 0.07), 0 10px 28px rgba(17, 65, 63, 0.05);
+  --sh-lg: 0 12px 32px rgba(17, 65, 63, 0.14), 0 32px 64px rgba(17, 65, 63, 0.10);
+
+  /* ---- Type ------------------------------------------------
+     Outfit: geometric, circular bowls, double-storey 'a' — the
+     closest widely available match to the Steerwise wordmark.   */
+  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont,
+               'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: var(--font-sans);
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+
+  --t-display: clamp(2.5rem, 1.4rem + 4.2vw, 4.25rem);  /* 40 → 68 */
+  --t-h1:      clamp(2rem, 1.4rem + 2.4vw, 3rem);       /* 32 → 48 */
+  --t-h2:      clamp(1.5rem, 1.2rem + 1.1vw, 2.125rem); /* 24 → 34 */
+  --t-h3:      1.125rem;
+  --t-body:    1rem;
+  --t-sm:      0.875rem;
+  --t-xs:      0.8125rem;
+  --t-2xs:     0.75rem;
+
+  /* ---- Motion --------------------------------------------- */
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-1: 120ms;
+  --dur-2: 200ms;
+  --dur-3: 340ms;
+
+  /* ---- Layout --------------------------------------------- */
+  --max-w: 1160px;
+  --max-w-narrow: 640px;
+  --header-h: 60px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

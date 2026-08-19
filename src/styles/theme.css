@@ -1,0 +1,768 @@
+/* ============================================================
+   Packwise — Theme surfaces
+
+   Two signature treatments carry the brand, mirroring the way the
+   guideline uses them: a deep teal tile, and a bright green tile
+   with deep teal type on it. Everything else stays white with a
+   hairline border so those two keep their weight.
+
+   Structure and behaviour are untouched — this file only restyles.
+   ============================================================ */
+
+/* ---------------------------------------------------------------
+   Header
+   --------------------------------------------------------------- */
+.site-header { background: color-mix(in srgb, var(--surface) 86%, transparent); }
+.site-header.is-stuck { border-bottom-color: var(--line); }
+.brand { font-weight: 700; letter-spacing: -0.02em; font-size: 1.0625rem; }
+.brand-mark {
+  background: var(--deep);
+  border-radius: 9px;
+  width: 28px; height: 28px;
+}
+
+/* ---------------------------------------------------------------
+   Pack Light — the deep teal tile
+   --------------------------------------------------------------- */
+.packlight-card {
+  background: var(--deep);
+  border-color: var(--deep);
+  color: var(--deep-ink);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-md);
+}
+.packlight-card p { opacity: 0.78; }
+.packlight-card .btn {
+  background: var(--bright);
+  border-color: transparent;
+  color: var(--bright-ink);
+  font-weight: 700;
+  border-radius: var(--r-pill);
+  height: 44px;
+}
+.packlight-card .btn:hover:not(:disabled) {
+  background: var(--bright-hi);
+  color: var(--bright-ink);
+}
+.packlight-active {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--deep-ink);
+  font-weight: 600;
+}
+.packlight-weight .n { font-weight: 700; letter-spacing: -0.03em; font-size: 1.75rem; }
+
+/* ---------------------------------------------------------------
+   Trip considered — the bright green tile
+   --------------------------------------------------------------- */
+.considered {
+  background: var(--bright);
+  border-color: var(--bright);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-sm);
+}
+.considered .eyebrow { color: var(--deep); opacity: 0.92; }
+
+/* Contrast repairs found by sweeping every text/background pair.
+   Opacity is a contrast reduction, so these use colour instead. */
+.category-count { color: var(--ink-3); }
+.why-body .why-label { opacity: 1; color: var(--teal); }
+/* Dimming the whole node dropped its sub-text to 2.5:1; only the
+   label needs to recede, and colour does that legibly. */
+.route-node.muted-node { opacity: 1; }
+.route-node.muted-node .route-node-name { color: var(--ink-3); font-weight: 500; }
+.route-node.muted-node .route-dot { opacity: 0.7; }
+.mobile-bar-count { color: var(--ink); }
+.mobile-bar-weight { color: var(--ink-3); }
+.considered-tick { background: var(--deep); color: var(--bright); }
+.considered-route {
+  color: var(--deep);
+  font-weight: 700;
+  letter-spacing: -0.024em;
+  font-size: 1.3125rem;
+}
+.considered-facts,
+.considered-note { color: var(--deep); }
+.considered-facts { opacity: 0.88; font-weight: 500; }
+.considered-note { opacity: 0.88; }
+
+.safety-note { border-top-color: rgba(17, 65, 63, 0.2); }
+.safety-note > svg { color: var(--deep); opacity: 0.8; }
+.safety-note strong { color: var(--deep); }
+.safety-note p { color: var(--deep); opacity: 0.82; }
+
+/* ---------------------------------------------------------------
+   Bright green: positive state
+   --------------------------------------------------------------- */
+.checkbox[aria-checked='true'] {
+  background: var(--bright);
+  border-color: var(--bright);
+}
+.checkbox svg { color: var(--bright-ink); stroke-width: 3.5; }
+
+.progress-fill { background: var(--deep); }
+.progress-fill.complete { background: var(--bright); }
+
+.activity-tick { background: var(--bright); }
+.activity-tick svg { color: var(--bright-ink); }
+
+.done-banner {
+  background: var(--mint);
+  border-color: var(--mint-line);
+  border-radius: var(--r-lg);
+}
+.done-banner svg { color: var(--deep); }
+.done-banner strong,
+.done-banner span { color: var(--deep); }
+
+.opt-kept-chip {
+  background: var(--mint);
+  color: var(--deep);
+  border-color: var(--mint-line);
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------------
+   Cards
+   --------------------------------------------------------------- */
+.category,
+.trip-card,
+.progress-card,
+.route-card,
+.forgot-card,
+.insights,
+.preview,
+.diff-card,
+.sight-group,
+.route-builder,
+.modal {
+  border-radius: var(--r-xl);
+}
+.category { box-shadow: var(--sh-sm); }
+.category-head:hover { background: var(--surface-sunk); }
+
+.insights { background: var(--surface); box-shadow: var(--sh-sm); }
+.insight-ico {
+  background: var(--mint);
+  color: var(--deep);
+  border-radius: 10px;
+  width: 32px; height: 32px;
+}
+.insight strong { font-weight: 700; letter-spacing: -0.014em; }
+
+.forgot-card {
+  background: var(--recommended-soft);
+  border-color: var(--recommended-line);
+}
+.forgot-card h3 { color: var(--recommended); font-weight: 700; }
+
+/* ---------------------------------------------------------------
+   Route
+   --------------------------------------------------------------- */
+.route-dot {
+  background: var(--mint);
+  border-color: var(--mint-line);
+  color: var(--deep);
+  width: 28px; height: 28px;
+}
+.route-node.origin .route-dot {
+  background: var(--surface-sunk);
+  border-color: var(--line-strong);
+  color: var(--ink-3);
+}
+.route-node:not(:last-child)::before { background: var(--line-strong); }
+.route-node-name { font-weight: 600; letter-spacing: -0.014em; }
+
+.route-fact.intensity.low { background: var(--mint); color: var(--deep); }
+.route-fact.intensity.low svg { color: var(--deep); }
+.route-fact.intensity.mod { background: var(--recommended-soft); color: var(--recommended); }
+.route-fact.intensity.mod svg { color: var(--recommended); }
+.route-fact.intensity.high { background: var(--deep); color: var(--deep-ink); }
+.route-fact.intensity.high svg { color: var(--deep-ink); }
+
+/* ---------------------------------------------------------------
+   Selection states
+   --------------------------------------------------------------- */
+.activity-card[aria-pressed='true'],
+.pref-card[aria-pressed='true'],
+.luggage-card[aria-pressed='true'] {
+  border-color: var(--deep);
+  background: var(--mint-softer);
+  box-shadow: inset 0 0 0 1.5px var(--deep);
+}
+.activity-card,
+.pref-card,
+.luggage-card,
+.sight-group,
+.route-builder { border-radius: var(--r-lg); }
+
+.activity-card .name,
+.pref-title { font-weight: 600; letter-spacing: -0.012em; }
+
+/* ---------------------------------------------------------------
+   Numerals
+   --------------------------------------------------------------- */
+.summary-figure .n,
+.progress-count,
+.compare-col .val,
+.duration-readout .big,
+.how-step-n {
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+.how-step-n { color: var(--teal); }
+
+/* ---------------------------------------------------------------
+   Landing
+   --------------------------------------------------------------- */
+.hero-tag {
+  background: var(--deep);
+  border-color: var(--deep);
+  color: var(--deep-ink);
+  height: 32px;
+  font-weight: 500;
+  padding: 0 14px 0 11px;
+}
+/* Bright green cannot carry a headline on white — the mid teal can. */
+.hero h1 em { color: var(--teal); font-style: normal; }
+
+.preview { box-shadow: var(--sh-md); border-color: var(--line); }
+.preview-top { background: var(--surface-sunk); }
+.preview-route { font-weight: 600; letter-spacing: -0.014em; }
+.preview-row.done .preview-box {
+  background: var(--bright);
+  border-color: var(--bright);
+}
+.preview-row.done .preview-box::after { border-color: var(--bright-ink); }
+.preview-why {
+  background: var(--mint-softer);
+  border-color: var(--mint-line);
+  color: var(--deep);
+}
+
+.diff-chip.hi {
+  background: var(--mint);
+  border-color: var(--mint-line);
+  color: var(--deep);
+  font-weight: 500;
+}
+.diff-card { box-shadow: var(--sh-sm); }
+.diff-place { font-weight: 600; letter-spacing: -0.016em; }
+
+/* Sections need a visible edge now the page is white. */
+.how, .diff { border-top-color: var(--line); }
+.site-footer { border-top-color: var(--line); }
+
+/* ---------------------------------------------------------------
+   Inputs
+   --------------------------------------------------------------- */
+.field { border-radius: var(--r-md); }
+.field:focus { box-shadow: 0 0 0 3px var(--mint); }
+.combo-list { border-radius: var(--r-lg); box-shadow: var(--sh-lg); }
+.combo-opt { border-radius: var(--r-sm); }
+.combo-opt-name { font-weight: 500; }
+
+.duration-readout {
+  background: var(--mint-softer);
+  border-color: var(--mint-line);
+  border-radius: var(--r-lg);
+}
+.duration-readout .big,
+.duration-readout .sub,
+.duration-readout .dates { color: var(--deep); }
+
+.why-body {
+  background: var(--mint-softer);
+  border-color: var(--mint-line);
+  color: var(--deep);
+}
+.why-btn:hover,
+.why-btn[aria-expanded='true'] {
+  border-color: var(--mint-line);
+  background: var(--mint-softer);
+  color: var(--deep);
+}
+
+.place-tag, .sight-tag {
+  background: var(--mint-softer);
+  border-color: var(--mint-line);
+  color: var(--deep);
+}
+.chosen-place {
+  background: var(--mint-softer);
+  border-color: var(--mint-line);
+}
+.chosen-place > svg,
+.chosen-place-name,
+.chosen-place-sub,
+.chosen-place button { color: var(--deep); }
+
+.prefill-note {
+  background: var(--mint-softer);
+  border-color: var(--mint-line);
+  color: var(--deep);
+}
+.prefill-note button { color: var(--deep); }
+
+/* ---------------------------------------------------------------
+   Filters, toast, modal
+   --------------------------------------------------------------- */
+.filter-group { background: var(--ivory-deep); border-color: var(--line); box-shadow: none; }
+.filter-btn[aria-pressed='true'] { background: var(--deep); color: var(--deep-ink); }
+
+.toast { background: var(--deep); color: var(--deep-ink); font-weight: 500; }
+.overlay { background: rgba(17, 32, 31, 0.32); }
+.compare { background: var(--surface-sunk); border-radius: var(--r-lg); }
+.compare-col.after .val { color: var(--teal); }
+.pack-tagline { color: var(--ink-3); }
+
+/* ---------------------------------------------------------------
+   Priority badges
+   --------------------------------------------------------------- */
+.badge { font-weight: 600; height: 21px; }
+.badge.essential { background: var(--essential-soft); color: var(--essential); border-color: var(--essential-line); }
+.badge.recommended { background: var(--recommended-soft); color: var(--recommended); border-color: var(--recommended-line); }
+.badge.optional { background: var(--optional-soft); color: var(--optional); border-color: var(--optional-line); }
+
+.dot.essential { background: var(--essential); }
+.dot.recommended { background: var(--recommended); }
+.dot.optional { background: var(--optional); }
+
+/* ---------------------------------------------------------------
+   Mobile bar
+   --------------------------------------------------------------- */
+.mobile-bar {
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  border-top-color: var(--line);
+}
+.mobile-bar .btn-primary { border-radius: var(--r-pill); }
+
+/* ---------------------------------------------------------------
+   Loader
+   --------------------------------------------------------------- */
+.loader-step.active .loader-dot { border-color: var(--deep); border-right-color: transparent; }
+.loader-step.done .loader-dot { border-color: var(--bright); background: var(--bright); }
+.loader-step.done .loader-dot svg { color: var(--bright-ink); }
+.loader-bar span { background: var(--deep); }
+.step-progress-seg span { background: var(--deep); }
+
+
+/* ============================================================
+   Headings — medium weight throughout
+
+   Set in one place rather than per component, so the rule stays a
+   rule. Size and letter-spacing carry the hierarchy; weight stays
+   constant at 500.
+   ============================================================ */
+.display,
+.h1,
+.h2,
+.h3,
+h1, h2, h3, h4,
+.brand,
+.category-title h2,
+.modal-head h2,
+.loader-head h2,
+.sight-head h4,
+.how-step h3,
+.insight strong,
+.forgot-card h3,
+.considered-route,
+.preview-route,
+.diff-place,
+.route-node-name,
+.activity-card .name,
+.pref-title,
+.chosen-place-name,
+.combo-opt-name,
+/* Display figures are set at heading scale, so they follow the same rule. */
+.summary-figure .n,
+.progress-count,
+.compare-col .val,
+.duration-readout .big,
+.how-step-n,
+.packlight-weight .n,
+.stat-cell .n {
+  font-weight: 500;
+}
+
+/* ============================================================
+   Buttons — one radius everywhere
+   ============================================================ */
+.btn,
+.btn-lg,
+.btn-primary,
+.btn-secondary,
+.btn-ghost,
+.share-btn,
+.back-btn,
+.forgot-item,
+.packlight-card .btn {
+  border-radius: var(--r-btn);
+}
+
+/* Small controls take the tighter radius — a 16px curve on a 34px
+   control reads as a lozenge rather than a button. */
+.btn-sm,
+.btn.btn-sm,
+.chip-suggest,
+.filter-btn,
+.why-btn,
+.route-icon-btn,
+.modal-close,
+.combo-clear,
+.mobile-bar .btn-primary,
+.place-tag button,
+.sight-tag button,
+.chosen-place button,
+.prefill-note button {
+  border-radius: var(--r-btn-sm);
+}
+
+/* The track hugs the buttons inside it. */
+.filter-group { border-radius: calc(var(--r-btn-sm) + 4px); }
+
+/* Checkboxes are form controls, not buttons — they keep their own shape. */
+.checkbox { border-radius: 7px; }
+
+/* ============================================================
+   Landing — section rhythm
+   ============================================================ */
+.section-head { margin-bottom: var(--s-10); }
+.section-head .eyebrow { display: block; margin-bottom: var(--s-3); color: var(--teal); }
+
+.how-grid { margin-top: 0; }
+.how-step-n {
+  display: block;
+  font-size: 1.375rem;
+  color: var(--teal);
+  margin-bottom: var(--s-3);
+}
+.how-step h3 { margin-bottom: var(--s-2); }
+.how-step p { color: var(--ink-3); font-size: var(--t-sm); line-height: 1.65; }
+
+/* ============================================================
+   Landing — Pack light highlight
+
+   Full-bleed deep teal, echoing the Pack Light card in the app so
+   the feature reads as the same thing in both places.
+   ============================================================ */
+.packlight-section {
+  background: var(--deep);
+  color: var(--deep-ink);
+  padding: var(--s-16) 0;
+  margin-top: var(--s-12);
+}
+@media (min-width: 768px) {
+  .packlight-section { padding: var(--s-24) 0; margin-top: var(--s-20); }
+}
+
+.pl-grid { display: grid; gap: var(--s-10); align-items: center; }
+@media (min-width: 940px) {
+  .pl-grid { grid-template-columns: 1fr 400px; gap: var(--s-16); }
+}
+
+.pl-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 30px;
+  padding: 0 13px;
+  border-radius: var(--r-btn-sm);
+  background: var(--bright);
+  color: var(--bright-ink);
+  font-size: var(--t-2xs);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  margin-bottom: var(--s-5);
+}
+.pl-eyebrow svg { width: 13px; height: 13px; }
+
+.packlight-section .h1 { color: var(--deep-ink); max-width: 16ch; }
+.pl-lede {
+  color: var(--deep-ink);
+  opacity: 0.82;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  margin-top: var(--s-5);
+  max-width: 46ch;
+}
+.pl-cta { margin-top: var(--s-8); }
+.pl-btn {
+  background: var(--bright);
+  color: var(--bright-ink);
+  border-color: transparent;
+}
+.pl-btn:hover:not(:disabled) { background: var(--bright-hi); color: var(--bright-ink); }
+
+/* ---- The figures panel ---- */
+.pl-panel {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--r-xl);
+  padding: var(--s-6);
+}
+
+.pl-compare {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--s-3);
+}
+.pl-col { text-align: center; }
+.pl-lbl {
+  display: block;
+  font-size: var(--t-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--deep-ink);
+  opacity: 0.65;
+}
+.pl-val {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-top: 5px;
+  color: var(--deep-ink);
+}
+.pl-col.hi .pl-val { color: var(--bright); }
+.pl-sub { display: block; font-size: var(--t-sm); color: var(--deep-ink); opacity: 0.72; }
+.pl-arrow { width: 20px; height: 20px; color: var(--deep-ink); opacity: 0.5; }
+
+.pl-saving {
+  margin-top: var(--s-4);
+  padding: 9px var(--s-3);
+  border-radius: var(--r-btn-sm);
+  background: rgba(138, 222, 124, 0.10);
+  color: var(--bright);
+  font-size: var(--t-sm);
+  text-align: center;
+}
+
+.pl-changes {
+  margin-top: var(--s-5);
+  padding-top: var(--s-5);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  display: grid;
+  gap: var(--s-3);
+}
+.pl-changes li {
+  display: flex;
+  gap: var(--s-3);
+  font-size: var(--t-sm);
+  line-height: 1.5;
+  color: var(--deep-ink);
+  opacity: 0.9;
+}
+.pl-changes svg { width: 15px; height: 15px; flex: none; margin-top: 2px; }
+.pl-changes .rm { color: #FF9E85; }
+.pl-changes .mg { color: #FFD08A; }
+.pl-changes .kp { color: var(--bright); }
+.pl-changes b { font-weight: 500; }
+
+.pl-foot {
+  margin-top: var(--s-5);
+  font-size: var(--t-2xs);
+  color: var(--deep-ink);
+  opacity: 0.75;
+}
+
+.skeleton-row.dark {
+  background: linear-gradient(90deg, rgba(255,255,255,0.06) 25%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.06) 75%);
+  background-size: 200% 100%;
+}
+
+/* ============================================================
+   Landing — example trip switcher
+
+   Three genuinely different journeys, each generating a real plan.
+   Switching tabs re-runs the engine, so the differences on screen
+   are output rather than illustration.
+   ============================================================ */
+.ex-tabs {
+  display: flex;
+  gap: var(--s-2);
+  margin-bottom: var(--s-3);
+  flex-wrap: wrap;
+}
+.ex-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 9px 13px;
+  border-radius: var(--r-btn-sm);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  text-align: left;
+  transition: border-color var(--dur-1) var(--ease),
+              background var(--dur-1) var(--ease),
+              box-shadow var(--dur-1) var(--ease);
+}
+.ex-tab:hover { border-color: var(--line-strong); background: var(--surface-sunk); }
+.ex-tab > svg {
+  width: 14px; height: 14px;
+  color: var(--ink-4);
+  margin-bottom: 3px;
+}
+.ex-tab-label {
+  font-size: var(--t-xs);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.ex-tab-kind { font-size: 0.6875rem; color: var(--ink-4); }
+
+.ex-tab[aria-selected='true'] {
+  background: var(--mint-softer);
+  border-color: var(--deep);
+  box-shadow: inset 0 0 0 1px var(--deep);
+}
+.ex-tab[aria-selected='true'] > svg,
+.ex-tab[aria-selected='true'] .ex-tab-label,
+.ex-tab[aria-selected='true'] .ex-tab-kind { color: var(--deep); }
+
+.ex-note {
+  margin-top: var(--s-3);
+  font-size: var(--t-2xs);
+  color: var(--ink-4);
+  text-align: center;
+}
+
+/* ============================================================
+   Footer — creator note
+   ============================================================ */
+.site-footer {
+  display: block;
+  padding: var(--s-12) 0 var(--s-16);
+}
+.footer-grid { display: grid; gap: var(--s-8); }
+@media (min-width: 820px) {
+  .footer-grid { grid-template-columns: minmax(0, 1fr) 300px; gap: var(--s-16); }
+}
+
+.maker-eyebrow { display: block; margin-bottom: var(--s-3); color: var(--teal); }
+.maker-name {
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: var(--s-3);
+}
+.maker-why {
+  font-size: var(--t-sm);
+  line-height: 1.7;
+  color: var(--ink-3);
+  max-width: 56ch;
+}
+.maker-why + .maker-why { margin-top: var(--s-3); }
+
+.maker-links { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-5); }
+.maker-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 15px;
+  border-radius: var(--r-btn-sm);
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: var(--t-sm);
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color var(--dur-1) var(--ease),
+              background var(--dur-1) var(--ease),
+              color var(--dur-1) var(--ease);
+}
+.maker-link:hover { border-color: var(--deep); background: var(--mint-softer); color: var(--deep); }
+.maker-link svg { width: 15px; height: 15px; }
+
+.footer-meta {
+  display: grid;
+  gap: var(--s-2);
+  align-content: start;
+  font-size: var(--t-xs);
+  color: var(--ink-4);
+  line-height: 1.6;
+}
+@media (min-width: 820px) { .footer-meta { text-align: right; } }
+
+/* ---- Creator avatar ---------------------------------------- */
+.maker-identity {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  margin-bottom: var(--s-4);
+}
+.maker-avatar {
+  width: 56px;
+  height: 56px;
+  flex: none;
+  border-radius: 50%;
+  object-fit: cover;
+  /* The source is a full-length portrait, so bias the crop up to the face. */
+  object-position: 50% 32%;
+  background: var(--mint);
+  border: 2px solid var(--mint-line);
+}
+.maker-avatar.is-fallback {
+  display: grid;
+  place-items: center;
+  font-size: 1.375rem;
+  font-weight: 500;
+  color: var(--deep);
+  letter-spacing: -0.02em;
+}
+.maker-identity .maker-name { margin-bottom: 0; }
+
+/* ---- Brand lockup ------------------------------------------
+   The supplied logo already contains the wordmark, so the header
+   shows the image alone rather than an icon beside repeated text. */
+.brand { gap: 0; }
+.brand-logo {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+@media (max-width: 420px) { .brand-logo { height: 28px; } }
+
+/* ---- Pack light: the saving, stated up front ----------------
+   Showing only the current weight made the card ask for trust.
+   The pair plus arrow shows what the tap is actually worth. */
+.packlight-swap {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+  margin-bottom: var(--s-3);
+  flex-wrap: wrap;
+}
+.pw-now {
+  font-size: 1.75rem;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--deep-ink);
+  opacity: 0.55;
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+}
+.pw-arrow {
+  width: 17px; height: 17px;
+  color: var(--deep-ink);
+  opacity: 0.6;
+  align-self: center;
+  flex: none;
+}
+.pw-after {
+  font-size: 1.75rem;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--bright);
+}
+.pw-unit { font-size: var(--t-xs); color: var(--deep-ink); opacity: 0.75; }
