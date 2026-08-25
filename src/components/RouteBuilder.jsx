@@ -1,5 +1,6 @@
 import { MapPin, X, ChevronUp, ChevronDown, Home, CornerDownRight, Mountain } from 'lucide-react';
 import PlaceSearch from './PlaceSearch.jsx';
+import DestinationImage from './DestinationImage.jsx';
 import { createStop, destinationsOf, poisFor } from '../data/trip.js';
 import { track, EVENTS } from '../lib/analytics.js';
 
@@ -102,6 +103,8 @@ export default function RouteBuilder({ trip, onChange, showPois = false }) {
                   </ul>
                 )}
               </div>
+
+              <DestinationImage query={d.name} className="route-node-thumb" />
 
               <div className="route-node-actions">
                 <button

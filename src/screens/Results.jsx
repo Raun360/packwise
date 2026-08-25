@@ -16,6 +16,7 @@ import PlanInsights from '../components/PlanInsights.jsx';
 import RouteSummary from '../components/RouteSummary.jsx';
 import TripConsidered from '../components/TripConsidered.jsx';
 import useMediaQuery from '../hooks/useMediaQuery.js';
+import DestinationImage from '../components/DestinationImage.jsx';
 import { track, EVENTS } from '../lib/analytics.js';
 
 const FILTERS = [
@@ -211,6 +212,12 @@ export default function Results({ plan, setPlan, onEdit, onRestart, onToast }) {
             <span>~{stats.weight.toFixed(1)} kg</span>
           </div>
         </div>
+
+        <DestinationImage
+          query={ctx.primary?.name}
+          className="results-hero no-print"
+          showCredit
+        />
 
         <header className="results-head no-print">
           <h1 className="h1">Your packing plan is ready.</h1>

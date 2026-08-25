@@ -9,6 +9,8 @@ import { createEmptyTrip, createStop } from '../data/trip.js';
 import { searchPlaces } from '../engine/geocode.js';
 import { getRouteClimate } from '../engine/weather.js';
 import { monthsSpanned } from '../engine/context.js';
+import { POPULAR_TRIPS } from '../data/popularTrips.js';
+import DestinationImage from '../components/DestinationImage.jsx';
 
 /** Next occurrence of a month/day pair, so examples never read as past trips. */
 function nextDates(month, day, nights) {
@@ -136,7 +138,7 @@ function CreatorAvatar() {
   );
 }
 
-export default function Landing({ onStart, onDemo }) {
+export default function Landing({ onStart, onDemo, onExampleTrip }) {
   const [active, setActive] = useState(0);
   const [plans, setPlans] = useState({});
   const loading = useRef(new Set());
@@ -236,6 +238,11 @@ export default function Landing({ onStart, onDemo }) {
               </div>
 
               <div className="preview" aria-live="polite">
+                <DestinationImage
+                  key={spec.id}
+                  query={spec.destinations[0]}
+                  className="preview-image"
+                />
                 <div className="preview-top">
                   <span className="preview-route">
                     <RouteIcon aria-hidden="true" />
@@ -295,6 +302,40 @@ export default function Landing({ onStart, onDemo }) {
                   : 'Building this example…'}
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------- Popular trips ------------------------- */}
+      <section className="popular-section" aria-labelledby="popular-h">
+        <div className="shell">
+          <div className="section-head">
+            <span className="eyebrow">Popular trips</span>
+            <h2 className="h1" id="popular-h" style={{ maxWidth: '20ch' }}>
+              Already know where you're going?
+            </h2>
+          </div>
+
+          <div className="popular-grid">
+            {POPULAR_TRIPS.map((t) => {
+              const Icon = t.icon;
+              return (
+                <button
+                  key={t.id}
+                  type="button"
+                  className="popular-card"
+                  onClick={() => onExampleTrip(t)}
+                >
+                  <DestinationImage query={t.name} className="popular-card-image" showCredit>
+                    <span className="popular-card-tag">
+                      <Icon aria-hidden="true" />
+                      {t.name}
+                    </span>
+                  </DestinationImage>
+                  <span className="popular-card-tagline">{t.tagline}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
       </section>

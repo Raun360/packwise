@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Check } from 'lucide-react';
-import Landing, { buildDemoTrip } from './screens/Landing.jsx';
+import Landing, { buildDemoTrip, buildExampleTrip } from './screens/Landing.jsx';
 import Planner from './screens/Planner.jsx';
 import Results from './screens/Results.jsx';
 import PlanningLoader from './components/PlanningLoader.jsx';
@@ -162,6 +162,19 @@ export default function App() {
     }
   };
 
+  /** Load a popular pre-planned trip (landing page grid) into the planner. */
+  const startFromSpec = async (spec) => {
+    setPrefilled(true);
+    setView('planner');
+    window.scrollTo(0, 0);
+    track(EVENTS.TRIP_STARTED, { entry_point: 'popular_trip' });
+    try {
+      setTrip(await buildExampleTrip(spec));
+    } catch {
+      setTrip(createEmptyTrip());
+    }
+  };
+
   const goHome = () => {
     setView(plan ? 'results' : 'landing');
     window.scrollTo(0, 0);
@@ -220,7 +233,9 @@ export default function App() {
       </header>
 
       <main id="main">
-        {view === 'landing' && <Landing onStart={startFresh} onDemo={startDemo} />}
+        {view === 'landing' && (
+          <Landing onStart={startFresh} onDemo={startDemo} onExampleTrip={startFromSpec} />
+        )}
 
         {view === 'planner' && (
           <Planner

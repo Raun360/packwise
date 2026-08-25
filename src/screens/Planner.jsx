@@ -128,8 +128,9 @@ export default function Planner({ trip, onChange, onSubmit, onExit, prefilled = 
             <div className="prefill-note" role="status">
               <Wand2 aria-hidden="true" />
               <span>
-                We&apos;ve filled this in with an example journey — Kolkata out to Sikkim by way of
-                Darjeeling. Change anything you like as you go.
+                We&apos;ve filled this in with an example journey
+                {destinations[0] ? ` — ${destinations[0].name}` : ''}. Change anything you like as
+                you go.
               </span>
               <button type="button" onClick={() => setNoteDismissed(true)}>Got it</button>
             </div>
