@@ -1552,17 +1552,6 @@
   transition: opacity var(--dur-2) var(--ease);
 }
 .dest-image:not(.dest-image-empty) .dest-image-scrim { opacity: 1; }
-.dest-image-credit {
-  position: absolute;
-  right: 8px;
-  bottom: 6px;
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.85);
-  text-decoration: none;
-  z-index: 1;
-}
-.dest-image-credit:hover { text-decoration: underline; }
-
 /* Live-example preview image */
 .preview-image {
   height: 140px;

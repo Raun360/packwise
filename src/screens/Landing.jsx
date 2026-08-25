@@ -330,7 +330,6 @@ export default function Landing({ onStart, onDemo, onExampleTrip }) {
                   <DestinationImage
                     image={POPULAR_TRIP_IMAGES[t.id]}
                     className="popular-card-image"
-                    showCredit
                   >
                     <span className="popular-card-tag">
                       <Icon aria-hidden="true" />

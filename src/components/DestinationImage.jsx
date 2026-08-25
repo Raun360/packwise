@@ -15,7 +15,7 @@ import { getDestinationImage } from '../lib/destinationImage.js';
  * builder) where the place isn't known ahead of time.
  */
 export default function DestinationImage({
-  query, image: staticImage, className = '', showCredit = false, children,
+  query, image: staticImage, className = '', children,
 }) {
   const [fetched, setFetched] = useState(null);
 
@@ -36,16 +36,6 @@ export default function DestinationImage({
       {img && <img src={img.url} alt={img.alt} loading="lazy" decoding="async" />}
       <div className="dest-image-scrim" aria-hidden="true" />
       {children}
-      {img && showCredit && (
-        <a
-          className="dest-image-credit"
-          href={`${img.credit.link}?utm_source=packwise&utm_medium=referral`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Photo: {img.credit.name}
-        </a>
-      )}
     </div>
   );
 }

@@ -216,7 +216,6 @@ export default function Results({ plan, setPlan, onEdit, onRestart, onToast }) {
         <DestinationImage
           query={ctx.primary?.name}
           className="results-hero no-print"
-          showCredit
         />
 
         <header className="results-head no-print">
