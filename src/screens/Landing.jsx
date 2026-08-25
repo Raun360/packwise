@@ -10,6 +10,7 @@ import { searchPlaces } from '../engine/geocode.js';
 import { getRouteClimate } from '../engine/weather.js';
 import { monthsSpanned } from '../engine/context.js';
 import { POPULAR_TRIPS } from '../data/popularTrips.js';
+import POPULAR_TRIP_IMAGES from '../data/popularTripImages.json';
 import DestinationImage from '../components/DestinationImage.jsx';
 
 /** Next occurrence of a month/day pair, so examples never read as past trips. */
@@ -326,13 +327,16 @@ export default function Landing({ onStart, onDemo, onExampleTrip }) {
                   className="popular-card"
                   onClick={() => onExampleTrip(t)}
                 >
-                  <DestinationImage query={t.name} className="popular-card-image" showCredit>
+                  <DestinationImage
+                    image={POPULAR_TRIP_IMAGES[t.id]}
+                    className="popular-card-image"
+                    showCredit
+                  >
                     <span className="popular-card-tag">
                       <Icon aria-hidden="true" />
                       {t.name}
                     </span>
                   </DestinationImage>
-                  <span className="popular-card-tagline">{t.tagline}</span>
                 </button>
               );
             })}

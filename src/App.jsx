@@ -199,7 +199,7 @@ export default function App() {
         <div className="inner">
           <button
             className="brand"
-            onClick={() => { setView(plan ? 'results' : 'landing'); window.scrollTo(0, 0); }}
+            onClick={() => { setView('landing'); window.scrollTo(0, 0); }}
             aria-label="Packwise home"
           >
             <img
