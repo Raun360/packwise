@@ -767,14 +767,15 @@ h1, h2, h3, h4,
 }
 
 /* ---------------------------------------------------------------
-   Footer — Devault: a dot-matrix wordmark, dark grid glyphs with
+   Footer — Devault: a dot-matrix wordmark, light grid glyphs with
    sparse blue pixels that flicker at random, like an LED sign.
    --------------------------------------------------------------- */
 .footer-devault {
   margin-top: var(--s-10);
   padding: var(--s-14) var(--s-6);
   border-radius: var(--r-xl);
-  background: #08090b;
+  background: var(--accent-softer);
+  border: 1px solid var(--accent-line);
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -803,7 +804,7 @@ h1, h2, h3, h4,
 
 /* Base layer: the dim grid every glyph is built from. */
 .footer-wordmark .wordmark-base {
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.22) 1px, transparent 1.4px);
+  background-image: radial-gradient(circle, rgba(17, 32, 31, 0.28) 1px, transparent 1.4px);
 }
 
 /* Sparkle layers: three offset dot grids stacked on the same glyphs,
@@ -813,8 +814,7 @@ h1, h2, h3, h4,
 .footer-wordmark .wordmark-glow {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle, #6f8dff 1.4px, transparent 1.7px);
-  mix-blend-mode: screen;
+  background-image: radial-gradient(circle, #3358e0 1.4px, transparent 1.7px);
   opacity: 0;
 }
 .footer-wordmark .wordmark-glow-a {
