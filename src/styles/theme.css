@@ -765,4 +765,104 @@ h1, h2, h3, h4,
   line-height: 1;
   color: var(--bright);
 }
+
+/* ---------------------------------------------------------------
+   Footer — Devault: a dot-matrix wordmark, dark grid glyphs with
+   sparse blue pixels that flicker at random, like an LED sign.
+   --------------------------------------------------------------- */
+.footer-devault {
+  margin-top: var(--s-10);
+  padding: var(--s-14) var(--s-6);
+  border-radius: var(--r-xl);
+  background: #08090b;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.footer-wordmark {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  font-family: 'Courier New', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 700;
+  font-size: clamp(2.5rem, 11vw, 7rem);
+  line-height: 1;
+  letter-spacing: 0.03em;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.footer-wordmark span:not(.sr-only) {
+  display: block;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-size: 7px 7px;
+  background-position: 0 0;
+}
+
+/* Base layer: the dim grid every glyph is built from. */
+.footer-wordmark .wordmark-base {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.22) 1px, transparent 1.4px);
+}
+
+/* Sparkle layers: three offset dot grids stacked on the same glyphs,
+   each faded in and out on its own cycle, so different pixels of the
+   letters light up blue at any given moment — an irregular, LED-sign
+   flicker rather than a uniform pulse. */
+.footer-wordmark .wordmark-glow {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, #6f8dff 1.4px, transparent 1.7px);
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+.footer-wordmark .wordmark-glow-a {
+  background-size: 29px 29px;
+  background-position: 2px 1px;
+  animation: devault-flicker-a 3.1s steps(1, end) infinite;
+}
+.footer-wordmark .wordmark-glow-b {
+  background-size: 37px 37px;
+  background-position: 19px 24px;
+  animation: devault-flicker-b 4s steps(1, end) infinite;
+  animation-delay: -1.6s;
+}
+.footer-wordmark .wordmark-glow-c {
+  background-size: 23px 23px;
+  background-position: 9px 14px;
+  animation: devault-flicker-c 2.4s steps(1, end) infinite;
+  animation-delay: -0.9s;
+}
+
+/* Mostly dark, with brief blue spikes at staggered points so only a
+   handful of pixels are lit at any instant — never the whole grid. */
+@keyframes devault-flicker-a {
+  0%, 12%, 30%, 47%, 100% { opacity: 0; }
+  6% { opacity: 0.85; }
+  38% { opacity: 0.6; }
+  70%, 82% { opacity: 0; }
+  76% { opacity: 0.9; }
+}
+@keyframes devault-flicker-b {
+  0%, 20%, 55%, 100% { opacity: 0; }
+  10% { opacity: 0.7; }
+  40%, 90% { opacity: 0; }
+  62% { opacity: 0.85; }
+  95% { opacity: 0.5; }
+}
+@keyframes devault-flicker-c {
+  0%, 33%, 60%, 100% { opacity: 0; }
+  17% { opacity: 0.9; }
+  45% { opacity: 0.55; }
+  80% { opacity: 0; }
+  88% { opacity: 0.75; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-wordmark .wordmark-glow {
+    animation: none;
+    opacity: 0.5;
+  }
+}
 .pw-unit { font-size: var(--t-xs); color: var(--deep-ink); opacity: 0.75; }
