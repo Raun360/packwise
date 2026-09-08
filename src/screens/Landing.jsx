@@ -507,16 +507,6 @@ export default function Landing({ onStart, onDemo, onExampleTrip }) {
               <span>No account, no tracking. Your trips stay on your device.</span>
             </div>
           </div>
-
-          <div className="footer-devault">
-            <h3 className="footer-wordmark">
-              <span className="wordmark-base" aria-hidden="true">Devault</span>
-              <span className="wordmark-glow wordmark-glow-a" aria-hidden="true">Devault</span>
-              <span className="wordmark-glow wordmark-glow-b" aria-hidden="true">Devault</span>
-              <span className="wordmark-glow wordmark-glow-c" aria-hidden="true">Devault</span>
-              <span className="sr-only">Devault</span>
-            </h3>
-          </div>
         </footer>
       </div>
     </>
