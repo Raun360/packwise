@@ -3,6 +3,7 @@ import { Check } from 'lucide-react';
 import Landing, { buildDemoTrip, buildExampleTrip } from './screens/Landing.jsx';
 import Planner from './screens/Planner.jsx';
 import Results from './screens/Results.jsx';
+import Advertise from './screens/Advertise.jsx';
 import PlanningLoader from './components/PlanningLoader.jsx';
 import { buildPlan, rebuild } from './engine/plan.js';
 import { getRouteClimate } from './engine/weather.js';
@@ -175,6 +176,14 @@ export default function App() {
     }
   };
 
+  /** Nav link: switch to the landing page if needed, then scroll to a section. */
+  const goToSection = (id) => {
+    setView('landing');
+    setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 60);
+  };
+
   const goHome = () => {
     setView(plan ? 'results' : 'landing');
     window.scrollTo(0, 0);
@@ -212,6 +221,21 @@ export default function App() {
             />
           </button>
 
+          {(view === 'landing' || view === 'advertise') && (
+            <nav className="site-nav" aria-label="Main">
+              <button type="button" onClick={() => goToSection('popular')}>Popular trips</button>
+              <button type="button" onClick={() => goToSection('how')}>How it works</button>
+              <button type="button" onClick={() => goToSection('pack-light')}>Pack light</button>
+              <button
+                type="button"
+                aria-current={view === 'advertise' ? 'page' : undefined}
+                onClick={() => { setView('advertise'); window.scrollTo(0, 0); }}
+              >
+                Advertise
+              </button>
+            </nav>
+          )}
+
           <div className="header-actions">
             {view === 'landing' && (
               <button className="btn btn-primary btn-sm" onClick={startFresh}>
@@ -234,7 +258,16 @@ export default function App() {
 
       <main id="main">
         {view === 'landing' && (
-          <Landing onStart={startFresh} onDemo={startDemo} onExampleTrip={startFromSpec} />
+          <Landing
+            onStart={startFresh}
+            onDemo={startDemo}
+            onExampleTrip={startFromSpec}
+            onAdvertise={() => { setView('advertise'); window.scrollTo(0, 0); }}
+          />
+        )}
+
+        {view === 'advertise' && (
+          <Advertise onBack={() => { setView('landing'); window.scrollTo(0, 0); }} />
         )}
 
         {view === 'planner' && (

@@ -139,7 +139,7 @@ function CreatorAvatar() {
   );
 }
 
-export default function Landing({ onStart, onDemo, onExampleTrip }) {
+export default function Landing({ onStart, onDemo, onExampleTrip, onAdvertise }) {
   const [active, setActive] = useState(0);
   const [plans, setPlans] = useState({});
   const loading = useRef(new Set());
@@ -308,7 +308,7 @@ export default function Landing({ onStart, onDemo, onExampleTrip }) {
       </section>
 
       {/* ------------------------- Popular trips ------------------------- */}
-      <section className="popular-section" aria-labelledby="popular-h">
+      <section className="popular-section" id="popular" aria-labelledby="popular-h">
         <div className="shell">
           <div className="section-head">
             <span className="eyebrow">Popular trips</span>
@@ -344,7 +344,7 @@ export default function Landing({ onStart, onDemo, onExampleTrip }) {
       </section>
 
       {/* ------------------------- How to use ------------------------- */}
-      <section className="how" aria-labelledby="how-h">
+      <section className="how" id="how" aria-labelledby="how-h">
         <div className="shell">
           <div className="section-head">
             <span className="eyebrow">How to use it</span>
@@ -366,7 +366,7 @@ export default function Landing({ onStart, onDemo, onExampleTrip }) {
       </section>
 
       {/* ------------------------- Pack light ------------------------- */}
-      <section className="packlight-section" aria-labelledby="pl-h">
+      <section className="packlight-section" id="pack-light" aria-labelledby="pl-h">
         <div className="shell">
           <div className="pl-grid">
             <div className="pl-copy">
@@ -455,57 +455,53 @@ export default function Landing({ onStart, onDemo, onExampleTrip }) {
 
       <div className="shell">
         <footer className="site-footer">
-          <div className="footer-grid">
-            <div>
-              <span className="eyebrow maker-eyebrow">Who made this</span>
+          <div className="footer-top">
+            <div className="footer-brand">
+              <img className="footer-logo" src="/logo.png" alt="Packwise" width="141" height="32" loading="lazy" decoding="async" />
+              <p>
+                Packing lists built around your whole route — every stop, how high it sits and
+                the weather on your dates.
+              </p>
+              <div className="footer-social">
+                <a href="https://x.com/Skirook" target="_blank" rel="noopener noreferrer" aria-label="Packwise creator on X">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                </a>
+                <a href="https://www.linkedin.com/in/raunak360" target="_blank" rel="noopener noreferrer" aria-label="Packwise creator on LinkedIn">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05a3.74 3.74 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13M7.12 20.45H3.56V9h3.56zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <nav className="footer-col" aria-label="Product">
+              <h2 className="footer-heading">Product</h2>
+              <button type="button" onClick={onStart}>Plan a trip</button>
+              <a href="#popular">Popular trips</a>
+              <a href="#how">How it works</a>
+              <a href="#pack-light">Pack light</a>
+            </nav>
+
+            <nav className="footer-col" aria-label="For business">
+              <h2 className="footer-heading">For business</h2>
+              <button type="button" onClick={onAdvertise}>Advertise on Packwise</button>
+            </nav>
+
+            <div className="footer-col">
+              <h2 className="footer-heading">Made by</h2>
               <div className="maker-identity">
                 <CreatorAvatar />
                 <p className="maker-name">Raunak</p>
               </div>
-              <p className="maker-why">
-                I built Packwise because every packing app I tried gave me the same list
-                whether I was going to a beach or a mountain pass. A checklist that doesn't
-                know where you're going isn't really helping — it's just a list you have to
-                edit yourself.
-              </p>
-              <p className="maker-why">
-                So this one starts from the journey instead: every stop you'll actually
-                sleep in, how high it sits, what the weather really did there on your dates,
-                and how much you'll be moving between them. Then it explains itself, because
-                a recommendation you can't question isn't worth much.
-              </p>
-
-              <div className="maker-links">
-                <a
-                  className="maker-link"
-                  href="https://x.com/Skirook"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                  </svg>
-                  @Skirook on X
-                </a>
-                <a
-                  className="maker-link"
-                  href="https://www.linkedin.com/in/raunak360"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05a3.74 3.74 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13M7.12 20.45H3.56V9h3.56zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0" />
-                  </svg>
-                  LinkedIn
-                </a>
-              </div>
+              <p className="footer-note">A traveller who got tired of packing lists that ignore where you&apos;re going.</p>
             </div>
+          </div>
 
-            <div className="footer-meta">
-              <span>Packwise — pack smarter, travel lighter.</span>
-              <span>Places and weather from Open-Meteo, with offline fallbacks.</span>
-              <span>No account, no tracking. Your trips stay on your device.</span>
-            </div>
+          <div className="footer-bottom">
+            <span>© {new Date().getFullYear()} Packwise</span>
+            <span>Places and weather from Open-Meteo · Photos from Unsplash</span>
           </div>
         </footer>
       </div>

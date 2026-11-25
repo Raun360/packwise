@@ -17,6 +17,8 @@ import RouteSummary from '../components/RouteSummary.jsx';
 import TripConsidered from '../components/TripConsidered.jsx';
 import useMediaQuery from '../hooks/useMediaQuery.js';
 import DestinationImage from '../components/DestinationImage.jsx';
+import AdCard from '../components/AdCard.jsx';
+import { matchAds } from '../engine/ads.js';
 import { track, EVENTS } from '../lib/analytics.js';
 
 const FILTERS = [
@@ -41,6 +43,8 @@ export default function Results({ plan, setPlan, onEdit, onRestart, onToast }) {
   const allPacked = items.length > 0 && packedCount === items.length;
 
   const report = useMemo(() => optimise(plan), [plan]);
+  // Keyed on the trip, not the plan: ticking items off must not reshuffle ads.
+  const ads = useMemo(() => matchAds(ctx), [ctx.trip]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Functional update: ticking several items in quick succession must not drop
   // any of them to a stale closure. The updater itself stays pure — no side
@@ -239,7 +243,12 @@ export default function Results({ plan, setPlan, onEdit, onRestart, onToast }) {
           </div>
         </header>
 
-        <TripConsidered ctx={ctx} />
+        {/* On desktop the first ad sits beside "Trip considered", which only
+            uses the left half of its width; the rest go in the rail. */}
+        <div className={`considered-row${isDesktop && ads.length ? ' has-ad' : ''}`}>
+          <TripConsidered ctx={ctx} />
+          {isDesktop && ads[0] && <AdCard ad={ads[0]} placement="results-top" />}
+        </div>
 
         <PlanInsights ctx={ctx} />
 
@@ -276,6 +285,8 @@ export default function Results({ plan, setPlan, onEdit, onRestart, onToast }) {
             {isDesktop && <RouteSummary ctx={ctx} />}
             {isDesktop && <TripSummary ctx={ctx} />}
             <PackingProgress stats={stats} packedCount={packedCount} />
+
+            {isDesktop && ads.slice(1).map((ad) => <AdCard key={ad.id} ad={ad} placement="results-rail" />)}
 
             {/* On a phone the sticky bar already carries Pack Light, so the card
                 and the secondary cards move below the list. */}
@@ -332,6 +343,7 @@ export default function Results({ plan, setPlan, onEdit, onRestart, onToast }) {
 
             {!isDesktop && (
               <div className="rail-after no-print">
+                {ads.map((ad) => <AdCard key={ad.id} ad={ad} placement="results-below-list" />)}
                 <PackLightCard />
                 <RouteSummary ctx={ctx} />
                 <TripSummary ctx={ctx} />

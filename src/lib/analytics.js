@@ -116,6 +116,9 @@ export const EVENTS = {
   TRIP_SAVED: 'trip_saved',
   TRIP_SHARED: 'trip_shared',
   AD_VIEWED: 'ad_viewed',
+  AD_CLICKED: 'ad_clicked',
+  AD_PLAN_SELECTED: 'ad_plan_selected',
+  AD_REQUEST_SUBMITTED: 'ad_request_submitted',
 };
 
 /**
