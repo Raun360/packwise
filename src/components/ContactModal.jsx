@@ -33,6 +33,10 @@ export default function ContactModal({ onClose }) {
     e.preventDefault();
     if (sending) return;
     if (message.trim().length < 3) { setError('Write a message first.'); return; }
+    if (replyTo.trim().length < 6) {
+      setError('Add your email or WhatsApp number so we can reply.');
+      return;
+    }
 
     track(EVENTS.CONTACT_SENT, { topic });
     if (trap) { setResult('sent'); return; }
@@ -42,7 +46,7 @@ export default function ContactModal({ onClose }) {
       topic,
       message: message.trim(),
       name: name.trim() || 'Anonymous',
-      reply_to: replyTo.trim() || '—',
+      reply_to: replyTo.trim(),
     });
     setSending(false);
     setResult(ok ? 'sent' : 'fallback');
@@ -57,9 +61,7 @@ export default function ContactModal({ onClose }) {
       <Modal title="Message sent" subtitle="Thanks — it's in our inbox." onClose={onClose}>
         <p className="contact-done">
           <Check aria-hidden="true" />
-          {replyTo.trim()
-            ? "We'll get back to you on the contact you left."
-            : 'You left no contact, so we can read it but not reply.'}
+          We&apos;ll get back to you on {replyTo.trim()}.
         </p>
         <button type="button" className="btn btn-primary btn-block" onClick={onClose}>Done</button>
       </Modal>
@@ -114,10 +116,11 @@ export default function ContactModal({ onClose }) {
           <input id="c-name" className="field" value={name} onChange={(e) => setName(e.target.value)} />
         </div>
         <div>
-          <label className="label" htmlFor="c-reply">
-            Email or WhatsApp <span className="faint">Optional — only if you want a reply</span>
-          </label>
-          <input id="c-reply" className="field" value={replyTo} onChange={(e) => setReplyTo(e.target.value)} />
+          <label className="label" htmlFor="c-reply">Email or WhatsApp number</label>
+          <input
+            id="c-reply" className="field" value={replyTo} placeholder="So we can get back to you"
+            onChange={(e) => { setReplyTo(e.target.value); setError(''); }}
+          />
         </div>
         <input
           type="text" value={trap} onChange={(e) => setTrap(e.target.value)}
