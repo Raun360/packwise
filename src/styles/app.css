@@ -2030,3 +2030,14 @@ a.btn { text-decoration: none; }
   .considered-row.has-ad { align-items: stretch; }
   .considered-row.has-ad .ad-card-image { aspect-ratio: auto; flex: 1 1 auto; min-height: 140px; }
 }
+.footer-social a.footer-insta {
+  width: auto;
+  height: 38px;
+  padding: 0 var(--s-4) 0 var(--s-3);
+  display: inline-flex;
+  gap: var(--s-2);
+  border-radius: var(--r-pill);
+  font-size: var(--t-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
