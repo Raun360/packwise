@@ -119,6 +119,13 @@ export const EVENTS = {
   AD_CLICKED: 'ad_clicked',
   AD_PLAN_SELECTED: 'ad_plan_selected',
   AD_REQUEST_SUBMITTED: 'ad_request_submitted',
+  POPULAR_TRIP_CLICKED: 'popular_trip_clicked',
+  NAV_CLICKED: 'nav_clicked',
+  ADVERTISE_CLICKED: 'advertise_clicked',
+  CTA_CLICKED: 'cta_clicked',
+  SOCIAL_CLICKED: 'social_clicked',
+  CONTACT_OPENED: 'contact_opened',
+  CONTACT_SENT: 'contact_sent',
 };
 
 /**

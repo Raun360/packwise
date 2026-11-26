@@ -2,9 +2,7 @@ import { useState } from 'react';
 import { ArrowLeft, Check, AlertCircle, Send, Copy } from 'lucide-react';
 import { AD_PLANS, AD_INCLUDES, BUSINESS_TYPES, formatPrice } from '../data/adPlans.js';
 import { track, EVENTS } from '../lib/analytics.js';
-
-/** WhatsApp number requests are sent to, digits only with country code. */
-const CONTACT_WHATSAPP = (import.meta.env.VITE_ADS_WHATSAPP || '').replace(/\D/g, '');
+import { FORM_KEY, CONTACT_WHATSAPP, whatsappUrl, sendForm } from '../lib/sendForm.js';
 
 const EMPTY_FORM = {
   type: BUSINESS_TYPES[0],
@@ -15,6 +13,7 @@ const EMPTY_FORM = {
   phone: '',
   offer: '',
   contactName: '',
+  website: '', // honeypot: real visitors never see or fill this
 };
 
 function validate(f) {
@@ -50,6 +49,8 @@ export default function Advertise({ onBack }) {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [copied, setCopied] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [delivered, setDelivered] = useState(false);
 
   const set = (key) => (e) => {
     setForm((f) => ({ ...f, [key]: e.target.value }));
@@ -63,24 +64,52 @@ export default function Advertise({ onBack }) {
     track(EVENTS.AD_PLAN_SELECTED, { plan: p.id });
   };
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
+    if (sending) return;
     const err = validate(form);
     if (err) { setError(err); return; }
 
     const text = buildMessage(plan, form);
     setMessage(text);
-    setStage('done');
-    window.scrollTo(0, 0);
     track(EVENTS.AD_REQUEST_SUBMITTED, { plan: plan.id, business_type: form.type });
 
-    if (CONTACT_WHATSAPP) {
-      window.open(
-        `https://wa.me/${CONTACT_WHATSAPP}?text=${encodeURIComponent(text)}`,
-        '_blank',
-        'noopener,noreferrer'
-      );
+    // A filled honeypot is a bot: look successful, send nothing.
+    if (form.website) {
+      setDelivered(true);
+      setStage('done');
+      return;
     }
+
+    if (FORM_KEY) {
+      setSending(true);
+      const ok = await sendForm(
+        `Packwise ad request: ${form.businessName.trim()} (${plan.name})`,
+        {
+          plan: `${plan.name} (${formatPrice(plan.price)} / ${plan.period})`,
+          business_type: form.type,
+          business_name: form.businessName.trim(),
+          located_in: form.location.trim(),
+          show_on_trips_to: form.places.trim(),
+          link: form.link.trim(),
+          phone_or_whatsapp: form.phone.trim(),
+          offer_line: form.offer.trim(),
+          contact_name: form.contactName.trim(),
+          message: text,
+        }
+      );
+      setSending(false);
+      setDelivered(ok);
+      setStage('done');
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    // No form key configured: hand the request to WhatsApp if we can.
+    setDelivered(false);
+    setStage('done');
+    window.scrollTo(0, 0);
+    if (CONTACT_WHATSAPP) window.open(whatsappUrl(text), '_blank', 'noopener,noreferrer');
   };
 
   const copy = async () => {
@@ -111,8 +140,9 @@ export default function Advertise({ onBack }) {
               <span className="eyebrow">Advertise on Packwise</span>
               <h1 className="h1">Reach travellers while they plan.</h1>
               <p>
-                Hotels, homestays, cafes, 4x4, car and bike rentals, tour operators. Your card appears on the
-                packing plan of people travelling to the places you serve — not on everyone&apos;s.
+                Hotels, homestays, cafes, 4x4, car and bike rentals, tour operators. Your card
+                appears on the packing plan of people travelling to the places you serve — not on
+                everyone&apos;s.
               </p>
             </div>
 
@@ -234,15 +264,20 @@ export default function Advertise({ onBack }) {
               </div>
             </div>
 
+            <input
+              type="text" name="website" value={form.website} onChange={set('website')}
+              tabIndex={-1} autoComplete="off" aria-hidden="true" className="hp-field"
+            />
+
             {error && (
               <p className="validation" role="alert">
                 <AlertCircle aria-hidden="true" />{error}
               </p>
             )}
 
-            <button type="submit" className="btn btn-primary btn-lg form-submit">
+            <button type="submit" className="btn btn-primary btn-lg form-submit" disabled={sending}>
               <Send size={16} aria-hidden="true" />
-              Send request
+              {sending ? 'Sending…' : 'Send request'}
             </button>
             <p className="xs muted form-hint">
               This doesn&apos;t charge you. We&apos;ll reply with a payment link once we&apos;ve
@@ -255,11 +290,17 @@ export default function Advertise({ onBack }) {
         {stage === 'done' && (
           <div className="ad-done">
             <span className="considered-tick ad-done-tick" aria-hidden="true"><Check /></span>
-            <h1 className="h1">Request ready.</h1>
-            {CONTACT_WHATSAPP ? (
+            <h1 className="h1">{delivered ? 'Request sent.' : 'One more step.'}</h1>
+            {delivered ? (
               <p>
-                We opened WhatsApp with your request filled in — <b>press send there</b> to
-                complete it. We&apos;ll review it and reply with a payment link.
+                Thanks — we have your request. We&apos;ll review it and get back to you on the
+                number or link you gave, with a payment link.
+              </p>
+            ) : CONTACT_WHATSAPP ? (
+              <p>
+                {FORM_KEY ? 'We could not send this automatically. ' : ''}
+                <b>Press send in WhatsApp</b> to finish — we&apos;ll review it and reply with a
+                payment link.
               </p>
             ) : (
               <p>
@@ -271,6 +312,16 @@ export default function Advertise({ onBack }) {
             <pre className="ad-done-message">{message}</pre>
 
             <div className="ad-done-actions">
+              {CONTACT_WHATSAPP && (
+                <a
+                  className="btn btn-primary"
+                  href={whatsappUrl(message)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {delivered ? 'Also message us on WhatsApp' : 'Open WhatsApp'}
+                </a>
+              )}
               <button type="button" className="btn btn-secondary" onClick={copy}>
                 <Copy size={14} aria-hidden="true" />
                 {copied ? 'Copied' : 'Copy request'}

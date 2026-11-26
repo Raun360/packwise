@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Check } from 'lucide-react';
+import { Check, Menu, X } from 'lucide-react';
 import Landing, { buildDemoTrip, buildExampleTrip } from './screens/Landing.jsx';
 import Planner from './screens/Planner.jsx';
 import Results from './screens/Results.jsx';
 import Advertise from './screens/Advertise.jsx';
+import ContactModal from './components/ContactModal.jsx';
 import PlanningLoader from './components/PlanningLoader.jsx';
 import { buildPlan, rebuild } from './engine/plan.js';
 import { getRouteClimate } from './engine/weather.js';
@@ -12,6 +13,12 @@ import { createEmptyTrip, migrateTrip, destinationsOf } from './data/trip.js';
 import { track, EVENTS } from './lib/analytics.js';
 
 const STORAGE_KEY = 'packwise:v1';
+
+const NAV_ITEMS = [
+  { label: 'Popular trips', link: 'popular_trips', section: 'popular' },
+  { label: 'How it works', link: 'how_it_works', section: 'how' },
+  { label: 'Pack light', link: 'pack_light', section: 'pack-light' },
+];
 
 function loadSaved() {
   try {
@@ -35,6 +42,8 @@ export default function App() {
   const [stuck, setStuck] = useState(false);
   const [loaderDone, setLoaderDone] = useState(false);
   const [prefilled, setPrefilled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
   const weatherRef = useRef(null);
   // Tracks which plan (by its generatedAt stamp) has already fired trip_saved,
   // so the persist effect — which also runs on every checkbox toggle and Pack
@@ -184,6 +193,40 @@ export default function App() {
     }, 60);
   };
 
+  const showNav = view === 'landing' || view === 'advertise';
+
+  // Close the mobile menu whenever the screen changes or Escape is pressed.
+  useEffect(() => { setMenuOpen(false); }, [view]);
+  useEffect(() => {
+    if (!menuOpen) return undefined;
+    const onKey = (e) => { if (e.key === 'Escape') setMenuOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [menuOpen]);
+
+  const clickNav = (item, location) => {
+    track(EVENTS.NAV_CLICKED, { link: item.link, location });
+    goToSection(item.section);
+    setMenuOpen(false);
+  };
+  const clickAdvertise = (location) => {
+    track(EVENTS.ADVERTISE_CLICKED, { location });
+    setView('advertise');
+    window.scrollTo(0, 0);
+    setMenuOpen(false);
+  };
+  const clickPlan = (location) => {
+    track(EVENTS.CTA_CLICKED, { cta: 'plan_my_packing', location });
+    setMenuOpen(false);
+    startFresh();
+  };
+
+  const openContact = (location) => {
+    track(EVENTS.CONTACT_OPENED, { location });
+    setMenuOpen(false);
+    setContactOpen(true);
+  };
+
   const goHome = () => {
     setView(plan ? 'results' : 'landing');
     window.scrollTo(0, 0);
@@ -221,15 +264,17 @@ export default function App() {
             />
           </button>
 
-          {(view === 'landing' || view === 'advertise') && (
+          {showNav && (
             <nav className="site-nav" aria-label="Main">
-              <button type="button" onClick={() => goToSection('popular')}>Popular trips</button>
-              <button type="button" onClick={() => goToSection('how')}>How it works</button>
-              <button type="button" onClick={() => goToSection('pack-light')}>Pack light</button>
+              {NAV_ITEMS.map((item) => (
+                <button key={item.link} type="button" onClick={() => clickNav(item, 'header')}>
+                  {item.label}
+                </button>
+              ))}
               <button
                 type="button"
                 aria-current={view === 'advertise' ? 'page' : undefined}
-                onClick={() => { setView('advertise'); window.scrollTo(0, 0); }}
+                onClick={() => clickAdvertise('header')}
               >
                 Advertise
               </button>
@@ -238,7 +283,7 @@ export default function App() {
 
           <div className="header-actions">
             {view === 'landing' && (
-              <button className="btn btn-primary btn-sm" onClick={startFresh}>
+              <button className="btn btn-primary btn-sm header-cta" onClick={() => clickPlan('header')}>
                 Plan my packing
               </button>
             )}
@@ -252,8 +297,35 @@ export default function App() {
                 Back to my list
               </button>
             )}
+            {showNav && (
+              <button
+                type="button"
+                className="menu-toggle"
+                aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+                aria-expanded={menuOpen}
+                aria-controls="mobile-menu"
+                onClick={() => setMenuOpen((o) => !o)}
+              >
+                {menuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
+              </button>
+            )}
           </div>
         </div>
+
+        {showNav && menuOpen && (
+          <div className="mobile-menu" id="mobile-menu">
+            {NAV_ITEMS.map((item) => (
+              <button key={item.link} type="button" onClick={() => clickNav(item, 'mobile_menu')}>
+                {item.label}
+              </button>
+            ))}
+            <button type="button" onClick={() => clickAdvertise('mobile_menu')}>Advertise</button>
+            <button type="button" onClick={() => openContact('mobile_menu')}>Contact</button>
+            <button type="button" className="btn btn-primary mobile-menu-cta" onClick={() => clickPlan('mobile_menu')}>
+              Plan my packing
+            </button>
+          </div>
+        )}
       </header>
 
       <main id="main">
@@ -263,6 +335,7 @@ export default function App() {
             onDemo={startDemo}
             onExampleTrip={startFromSpec}
             onAdvertise={() => { setView('advertise'); window.scrollTo(0, 0); }}
+            onContact={() => openContact('footer')}
           />
         )}
 
@@ -291,9 +364,12 @@ export default function App() {
             onEdit={() => { setView('planner'); window.scrollTo(0, 0); }}
             onRestart={restart}
             onToast={showToast}
+            onContact={() => openContact('results')}
           />
         )}
       </main>
+
+      {contactOpen && <ContactModal onClose={() => setContactOpen(false)} />}
 
       {toast && (
         <div className="toast" role="status">

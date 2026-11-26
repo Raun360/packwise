@@ -27,7 +27,7 @@ const FILTERS = [
   { id: 'todo', label: 'Not packed' },
 ];
 
-export default function Results({ plan, setPlan, onEdit, onRestart, onToast }) {
+export default function Results({ plan, setPlan, onEdit, onRestart, onToast, onContact }) {
   const { ctx, stats, items } = plan;
 
   const [openCats, setOpenCats] = useState(() => new Set(CATEGORY_ORDER));
@@ -196,6 +196,13 @@ export default function Results({ plan, setPlan, onEdit, onRestart, onToast }) {
           onClick={onRestart}
         >
           Plan a different trip
+        </button>
+        <button
+          className="btn btn-ghost btn-block btn-sm"
+          style={{ marginTop: 'var(--s-2)' }}
+          onClick={onContact}
+        >
+          Send us feedback
         </button>
       </div>
     </>

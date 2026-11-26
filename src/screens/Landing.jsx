@@ -12,6 +12,7 @@ import { monthsSpanned } from '../engine/context.js';
 import { POPULAR_TRIPS } from '../data/popularTrips.js';
 import POPULAR_TRIP_IMAGES from '../data/popularTripImages.json';
 import DestinationImage from '../components/DestinationImage.jsx';
+import { track, EVENTS } from '../lib/analytics.js';
 
 /** Next occurrence of a month/day pair, so examples never read as past trips. */
 function nextDates(month, day, nights) {
@@ -139,7 +140,7 @@ function CreatorAvatar() {
   );
 }
 
-export default function Landing({ onStart, onDemo, onExampleTrip, onAdvertise }) {
+export default function Landing({ onStart, onDemo, onExampleTrip, onAdvertise, onContact }) {
   const [active, setActive] = useState(0);
   const [plans, setPlans] = useState({});
   const loading = useRef(new Set());
@@ -202,11 +203,17 @@ export default function Landing({ onStart, onDemo, onExampleTrip, onAdvertise })
               </p>
 
               <div className="hero-cta">
-                <button className="btn btn-primary btn-lg" onClick={onStart}>
+                <button
+                  className="btn btn-primary btn-lg"
+                  onClick={() => { track(EVENTS.CTA_CLICKED, { cta: 'plan_my_packing', location: 'hero' }); onStart(); }}
+                >
                   Plan my packing
                   <ArrowRight size={16} aria-hidden="true" />
                 </button>
-                <button className="btn btn-secondary btn-lg" onClick={onDemo}>
+                <button
+                  className="btn btn-secondary btn-lg"
+                  onClick={() => { track(EVENTS.CTA_CLICKED, { cta: 'see_how_it_works', location: 'hero' }); onDemo(); }}
+                >
                   See how it works
                 </button>
               </div>
@@ -325,7 +332,7 @@ export default function Landing({ onStart, onDemo, onExampleTrip, onAdvertise })
                   key={t.id}
                   type="button"
                   className="popular-card"
-                  onClick={() => onExampleTrip(t)}
+                  onClick={() => { track(EVENTS.POPULAR_TRIP_CLICKED, { trip_id: t.id }); onExampleTrip(t); }}
                 >
                   <DestinationImage
                     image={POPULAR_TRIP_IMAGES[t.id]}
@@ -384,7 +391,10 @@ export default function Landing({ onStart, onDemo, onExampleTrip, onAdvertise })
               </p>
 
               <div className="pl-cta">
-                <button className="btn btn-lg pl-btn" onClick={onDemo}>
+                <button
+                  className="btn btn-lg pl-btn"
+                  onClick={() => { track(EVENTS.CTA_CLICKED, { cta: 'try_example_trip', location: 'pack_light' }); onDemo(); }}
+                >
                   Try it on an example trip
                   <ArrowRight size={16} aria-hidden="true" />
                 </button>
@@ -463,12 +473,12 @@ export default function Landing({ onStart, onDemo, onExampleTrip, onAdvertise })
                 the weather on your dates.
               </p>
               <div className="footer-social">
-                <a href="https://x.com/Skirook" target="_blank" rel="noopener noreferrer" aria-label="Packwise creator on X">
+                <a href="https://x.com/Skirook" target="_blank" rel="noopener noreferrer" onClick={() => track(EVENTS.SOCIAL_CLICKED, { network: 'x' })} aria-label="Packwise creator on X">
                   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                   </svg>
                 </a>
-                <a href="https://www.linkedin.com/in/raunak360" target="_blank" rel="noopener noreferrer" aria-label="Packwise creator on LinkedIn">
+                <a href="https://www.linkedin.com/in/raunak360" target="_blank" rel="noopener noreferrer" onClick={() => track(EVENTS.SOCIAL_CLICKED, { network: 'linkedin' })} aria-label="Packwise creator on LinkedIn">
                   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05a3.74 3.74 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13M7.12 20.45H3.56V9h3.56zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0" />
                   </svg>
@@ -478,15 +488,21 @@ export default function Landing({ onStart, onDemo, onExampleTrip, onAdvertise })
 
             <nav className="footer-col" aria-label="Product">
               <h2 className="footer-heading">Product</h2>
-              <button type="button" onClick={onStart}>Plan a trip</button>
-              <a href="#popular">Popular trips</a>
-              <a href="#how">How it works</a>
-              <a href="#pack-light">Pack light</a>
+              <button type="button" onClick={() => { track(EVENTS.CTA_CLICKED, { cta: 'plan_my_packing', location: 'footer' }); onStart(); }}>Plan a trip</button>
+              <a href="#popular" onClick={() => track(EVENTS.NAV_CLICKED, { link: 'popular_trips', location: 'footer' })}>Popular trips</a>
+              <a href="#how" onClick={() => track(EVENTS.NAV_CLICKED, { link: 'how_it_works', location: 'footer' })}>How it works</a>
+              <a href="#pack-light" onClick={() => track(EVENTS.NAV_CLICKED, { link: 'pack_light', location: 'footer' })}>Pack light</a>
             </nav>
 
             <nav className="footer-col" aria-label="For business">
               <h2 className="footer-heading">For business</h2>
-              <button type="button" onClick={onAdvertise}>Advertise on Packwise</button>
+              <button
+                type="button"
+                onClick={() => { track(EVENTS.ADVERTISE_CLICKED, { location: 'footer' }); onAdvertise(); }}
+              >
+                Advertise on Packwise
+              </button>
+              <button type="button" onClick={onContact}>Contact us</button>
             </nav>
 
             <div className="footer-col">
