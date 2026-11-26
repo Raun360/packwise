@@ -58,10 +58,10 @@ export default function ContactModal({ onClose }) {
 
   if (result === 'sent') {
     return (
-      <Modal title="Message sent" subtitle="Thanks — it's in our inbox." onClose={onClose}>
+      <Modal title="Message sent" subtitle="Thanks for reaching out." onClose={onClose}>
         <p className="contact-done">
           <Check aria-hidden="true" />
-          We&apos;ll get back to you on {replyTo.trim()}.
+          We&apos;ll get back to you very soon.
         </p>
         <button type="button" className="btn btn-primary btn-block" onClick={onClose}>Done</button>
       </Modal>
