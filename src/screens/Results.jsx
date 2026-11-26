@@ -250,14 +250,16 @@ export default function Results({ plan, setPlan, onEdit, onRestart, onToast, onC
           </div>
         </header>
 
-        {/* On desktop the first ad sits beside "Trip considered", which only
-            uses the left half of its width; the rest go in the rail. */}
+        {/* On desktop the first ad runs down the side of "Trip considered" and
+            "What shaped this list", using the space those cards leave on the
+            right. The other ads go in the rail. */}
         <div className={`considered-row${isDesktop && ads.length ? ' has-ad' : ''}`}>
-          <TripConsidered ctx={ctx} />
+          <div className="considered-stack">
+            <TripConsidered ctx={ctx} />
+            <PlanInsights ctx={ctx} />
+          </div>
           {isDesktop && ads[0] && <AdCard ad={ads[0]} placement="results-top" />}
         </div>
-
-        <PlanInsights ctx={ctx} />
 
         <div className="results-toolbar no-print">
           <div className="filter-group" role="group" aria-label="Filter items">

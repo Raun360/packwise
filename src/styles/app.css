@@ -1359,7 +1359,9 @@
 .insights > .eyebrow { margin-bottom: var(--s-4); }
 .insight-grid { display: grid; gap: var(--s-4); }
 @media (min-width: 860px) {
-  .insight-grid { grid-template-columns: repeat(3, 1fr); gap: var(--s-6); }
+  /* As many columns as there are points (up to 3), so two points share the
+     full width instead of leaving an empty third column. */
+  .insight-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--s-6); }
 }
 .insight { display: flex; gap: var(--s-3); align-items: flex-start; }
 .insight-ico {
@@ -1904,3 +1906,127 @@ select.field { appearance: auto; }
 .contact-form { margin-bottom: 0; gap: var(--s-4); }
 .contact-done { display: flex; gap: var(--s-2); align-items: flex-start; margin-bottom: var(--s-5); }
 .contact-done svg { width: 18px; height: 18px; flex: none; color: var(--deep); margin-top: 2px; }
+
+/* ---------------------------------------------------------------
+   Advertise page — pitch sections
+   --------------------------------------------------------------- */
+.adv-hero { padding: var(--s-4) 0 var(--s-10); }
+.adv-hero .eyebrow, .adv-section > .eyebrow { display: block; margin-bottom: var(--s-3); color: var(--teal); }
+.adv-hero .h1 { margin-bottom: var(--s-4); max-width: 20ch; }
+.adv-lede { font-size: 1.0625rem; line-height: 1.6; color: var(--ink-3); max-width: 46ch; }
+.adv-hero-cta { margin-top: var(--s-6); }
+.adv-terms {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-5);
+  padding: 0;
+  margin: var(--s-4) 0 0;
+  font-size: var(--t-sm);
+  font-weight: 600;
+  color: var(--ink-2);
+}
+.adv-terms li { display: inline-flex; align-items: center; gap: 6px; }
+.adv-terms svg { width: 16px; height: 16px; color: var(--deep); }
+
+.adv-section { padding: var(--s-10) 0; border-top: 1px solid var(--line); }
+.adv-section .h2 { margin-bottom: var(--s-4); max-width: 24ch; }
+.adv-section p { color: var(--ink-3); line-height: 1.6; }
+#plans { scroll-margin-top: calc(var(--header-h) + var(--s-4)); }
+
+.adv-preview { display: grid; gap: var(--s-6); align-items: center; }
+@media (min-width: 640px) { .adv-preview { grid-template-columns: 1fr 280px; } }
+.adv-preview-card { position: relative; }
+.adv-preview-card .ad-card { margin-bottom: 0; }
+.adv-example-tag {
+  position: absolute;
+  top: -10px;
+  left: var(--s-4);
+  z-index: 2;
+  background: var(--deep);
+  color: var(--deep-ink);
+  font-size: var(--t-2xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+}
+
+.adv-why { display: grid; gap: var(--s-5); margin-top: var(--s-6); }
+@media (min-width: 640px) { .adv-why { grid-template-columns: repeat(3, 1fr); } }
+.adv-why h3, .adv-steps h3 { font-size: var(--t-base); font-weight: 700; margin-bottom: var(--s-1); color: var(--ink); }
+.adv-why p, .adv-steps p { font-size: var(--t-sm); }
+
+.adv-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--s-3);
+  margin-top: var(--s-8);
+}
+@media (min-width: 640px) { .adv-stats { grid-template-columns: repeat(4, 1fr); } }
+.adv-stats div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--s-4);
+  background: var(--mint-softer);
+  border: 1px solid var(--mint-line);
+  border-radius: var(--r-lg);
+}
+.adv-stats b { font-size: 1.5rem; letter-spacing: -0.03em; color: var(--deep); }
+.adv-stats span { font-size: var(--t-xs); color: var(--ink-3); line-height: 1.4; }
+
+.adv-steps { list-style: none; padding: 0; margin: var(--s-6) 0 0; display: grid; gap: var(--s-5); }
+.adv-steps li { display: flex; gap: var(--s-4); align-items: flex-start; }
+.adv-step-n {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--deep);
+  color: var(--deep-ink);
+  font-weight: 700;
+  font-size: var(--t-sm);
+}
+
+.plan-free { font-size: var(--t-xs); font-weight: 700; color: var(--deep); }
+
+.adv-faq { margin-top: var(--s-5); border-top: 1px solid var(--line); }
+.adv-faq details { border-bottom: 1px solid var(--line); }
+.adv-faq summary {
+  cursor: pointer;
+  padding: var(--s-4) 0;
+  font-weight: 600;
+  color: var(--ink);
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s-4);
+}
+.adv-faq summary::-webkit-details-marker { display: none; }
+.adv-faq summary::after { content: '+'; font-size: 1.25rem; line-height: 1; color: var(--ink-4); }
+.adv-faq details[open] summary::after { content: '–'; }
+.adv-faq details p { padding-bottom: var(--s-4); font-size: var(--t-sm); }
+
+.adv-owner { display: flex; gap: var(--s-4); align-items: center; }
+.adv-owner p { font-size: var(--t-sm); max-width: 52ch; }
+.adv-final-cta { padding: var(--s-6) 0 0; text-align: center; }
+a.btn { text-decoration: none; }
+.advertise .shell-narrow { max-width: 880px; }
+.advertise form, .advertise .ad-done { max-width: 620px; }
+
+/* Ad photos are wide 2:1, so rooms, hotels and vehicles show properly. */
+.ad-card-image { height: auto; aspect-ratio: 2 / 1; }
+
+/* "Trip considered" + "What shaped this list" on the left, the ad down the
+   right. The ad takes the stack's full height and its photo grows to fill it
+   (never under 140px), so the cards beside it keep their natural size. */
+.considered-stack { display: flex; flex-direction: column; gap: var(--s-6); min-width: 0; }
+.considered-stack .considered,
+.considered-stack .insights { margin-bottom: 0; }
+@media (min-width: 1000px) {
+  .considered-row.has-ad { align-items: stretch; }
+  .considered-row.has-ad .ad-card-image { aspect-ratio: auto; flex: 1 1 auto; min-height: 140px; }
+}

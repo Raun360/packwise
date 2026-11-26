@@ -9,12 +9,13 @@ import { trackAdViewed, track, EVENTS } from '../lib/analytics.js';
  * half of it is actually on screen, and `ad_clicked` on the button — the two
  * numbers a partner will ask for.
  */
-export default function AdCard({ ad, placement }) {
+export default function AdCard({ ad, placement, preview = false }) {
   const ref = useRef(null);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el || typeof IntersectionObserver === 'undefined') return undefined;
+    // A preview (the Advertise page's example) is not a real impression.
+    if (preview || !el || typeof IntersectionObserver === 'undefined') return undefined;
     const io = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
         trackAdViewed({ ad_unit: ad.id, placement });
@@ -23,7 +24,7 @@ export default function AdCard({ ad, placement }) {
     }, { threshold: 0.5 });
     io.observe(el);
     return () => io.disconnect();
-  }, [ad.id, placement]);
+  }, [ad.id, placement, preview]);
 
   const image = ad.imageId ? POPULAR_TRIP_IMAGES[ad.imageId] : null;
 
@@ -34,16 +35,23 @@ export default function AdCard({ ad, placement }) {
         <span className="ad-card-label">Sponsored · {ad.partner}</span>
         <h3 className="ad-card-title">{ad.title}</h3>
         <p className="ad-card-detail">{ad.detail}</p>
-        <a
-          className="btn btn-secondary btn-sm ad-card-cta"
-          href={ad.url}
-          target="_blank"
-          rel="sponsored noopener noreferrer"
-          onClick={() => track(EVENTS.AD_CLICKED, { ad_unit: ad.id, placement })}
-        >
-          {ad.cta}
-          <ArrowUpRight size={14} aria-hidden="true" />
-        </a>
+        {preview ? (
+          <span className="btn btn-secondary btn-sm ad-card-cta" aria-hidden="true">
+            {ad.cta}
+            <ArrowUpRight size={14} aria-hidden="true" />
+          </span>
+        ) : (
+          <a
+            className="btn btn-secondary btn-sm ad-card-cta"
+            href={ad.url}
+            target="_blank"
+            rel="sponsored noopener noreferrer"
+            onClick={() => track(EVENTS.AD_CLICKED, { ad_unit: ad.id, placement })}
+          >
+            {ad.cta}
+            <ArrowUpRight size={14} aria-hidden="true" />
+          </a>
+        )}
       </div>
     </aside>
   );

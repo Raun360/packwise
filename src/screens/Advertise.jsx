@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { ArrowLeft, Check, AlertCircle, Send, Copy } from 'lucide-react';
-import { AD_PLANS, AD_INCLUDES, BUSINESS_TYPES, formatPrice } from '../data/adPlans.js';
+import {
+  AD_PLANS, AD_INCLUDES, AD_TERMS, AD_STEPS, AD_FAQ, EXAMPLE_AD, BUSINESS_TYPES, formatPrice,
+} from '../data/adPlans.js';
+import AdCard from '../components/AdCard.jsx';
 import { track, EVENTS } from '../lib/analytics.js';
 import { FORM_KEY, CONTACT_WHATSAPP, whatsappUrl, sendForm } from '../lib/sendForm.js';
 
@@ -133,48 +136,157 @@ export default function Advertise({ onBack }) {
           {stage === 'form' ? 'Change plan' : 'Back'}
         </button>
 
-        {/* ---------------- 1. Plans ---------------- */}
+        {/* ---------------- 1. Pitch + plans ---------------- */}
         {stage === 'plans' && (
           <>
-            <div className="step-head">
+            {/* Hero */}
+            <section className="adv-hero">
               <span className="eyebrow">Advertise on Packwise</span>
-              <h1 className="h1">Reach travellers while they plan.</h1>
-              <p>
-                Hotels, homestays, cafes, 4x4, car and bike rentals, tour operators. Your card
-                appears on the packing plan of people travelling to the places you serve — not on
-                everyone&apos;s.
+              <h1 className="h1">Be in front of travellers the moment they plan a trip to your area.</h1>
+              <p className="adv-lede">
+                Hotels, homestays, cafes, 4x4, car and bike rentals, tour operators. Your card appears
+                on the packing plan of people travelling to the places you serve, not on everyone&apos;s.
               </p>
-            </div>
-
-            <div className="plan-grid">
-              {AD_PLANS.map((p) => (
-                <button
-                  key={p.id}
-                  type="button"
-                  className="plan-card"
-                  onClick={() => choose(p)}
-                >
-                  {p.badge && <span className="plan-badge">{p.badge}</span>}
-                  <span className="plan-name">{p.name}</span>
-                  <span className="plan-price">
-                    <b className="tnum">{formatPrice(p.price)}</b> / {p.period}
-                  </span>
-                  <span className="plan-blurb">{p.blurb}</span>
-                  <span className="plan-cta">Choose {p.name.toLowerCase()}</span>
-                </button>
-              ))}
-            </div>
-
-            <div className="card card-pad plan-includes">
-              <div className="eyebrow">Every plan includes</div>
-              <ul>
-                {AD_INCLUDES.map((t) => (
-                  <li key={t}><Check aria-hidden="true" />{t}</li>
-                ))}
+              <div className="adv-hero-cta">
+                <a href="#plans" className="btn btn-primary btn-lg">Start your free week</a>
+              </div>
+              <ul className="adv-terms">
+                {AD_TERMS.map((t) => <li key={t}><Check aria-hidden="true" />{t}</li>)}
               </ul>
-              <p className="xs muted">
-                No payment now. We review your request first, then send you a payment link.
+            </section>
+
+            {/* What the ad looks like */}
+            <section className="adv-section adv-preview">
+              <div>
+                <span className="eyebrow">What travellers see</span>
+                <h2 className="h2">A card on their packing plan, with a direct line to you.</h2>
+                <p>
+                  Someone plans a trip to Spiti. Next to their list, they see your card: your
+                  photo, your offer, and a button that opens a WhatsApp chat with you. No booking
+                  site in between, no commission.
+                </p>
+              </div>
+              <div className="adv-preview-card">
+                <span className="adv-example-tag">Example</span>
+                <AdCard ad={EXAMPLE_AD} placement="advertise-preview" preview />
+              </div>
+            </section>
+
+            {/* Why it works */}
+            <section className="adv-section">
+              <span className="eyebrow">Why it works</span>
+              <h2 className="h2">The right people, at the right moment.</h2>
+              <div className="adv-why">
+                <div>
+                  <h3>They&apos;re already going</h3>
+                  <p>Everyone who sees your card has just planned a trip with real dates. They
+                    still need somewhere to stay, a vehicle, a place to eat.</p>
+                </div>
+                <div>
+                  <h3>Only your area</h3>
+                  <p>Your card only shows on trips that include the places you serve. A Goa
+                    traveller never sees a Spiti homestay.</p>
+                </div>
+                <div>
+                  <h3>They reach you directly</h3>
+                  <p>One tap opens WhatsApp or your link. You talk to them yourself, and you keep
+                    everything you earn.</p>
+                </div>
+              </div>
+              <div className="adv-stats">
+                <div><b>100K+</b><span>views on our travel videos in two days</span></div>
+                <div><b>96%</b><span>of visitors are from India</span></div>
+                <div><b>95%</b><span>plan on their phone</span></div>
+                <div><b>3 max</b><span>ads on any plan</span></div>
+              </div>
+            </section>
+
+            {/* How it works */}
+            <section className="adv-section">
+              <span className="eyebrow">How it works</span>
+              <h2 className="h2">Live in a couple of days. Free for the first week.</h2>
+              <ol className="adv-steps">
+                {AD_STEPS.map((s, i) => (
+                  <li key={s.title}>
+                    <span className="adv-step-n">{i + 1}</span>
+                    <div>
+                      <h3>{s.title}</h3>
+                      <p>{s.body}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </section>
+
+            {/* Plans */}
+            <section className="adv-section" id="plans">
+              <span className="eyebrow">Plans</span>
+              <h2 className="h2">Simple pricing. Start free.</h2>
+              <div className="plan-grid">
+                {AD_PLANS.map((p) => (
+                  <button
+                    key={p.id}
+                    type="button"
+                    className="plan-card"
+                    onClick={() => choose(p)}
+                  >
+                    {p.badge && <span className="plan-badge">{p.badge}</span>}
+                    <span className="plan-name">{p.name}</span>
+                    <span className="plan-free">First week free, then</span>
+                    <span className="plan-price">
+                      <b className="tnum">{formatPrice(p.price)}</b> / {p.period}
+                    </span>
+                    <span className="plan-blurb">{p.blurb}</span>
+                    <span className="plan-cta">Start free with {p.name.toLowerCase()}</span>
+                  </button>
+                ))}
+              </div>
+
+              <div className="card card-pad plan-includes">
+                <div className="eyebrow">Every plan includes</div>
+                <ul>
+                  {AD_INCLUDES.map((t) => (
+                    <li key={t}><Check aria-hidden="true" />{t}</li>
+                  ))}
+                </ul>
+                <p className="xs muted">
+                  Pay by UPI after your free week, only if you want to continue. Cancel anytime.
+                </p>
+              </div>
+            </section>
+
+            {/* FAQ */}
+            <section className="adv-section">
+              <span className="eyebrow">Questions</span>
+              <h2 className="h2">Before you start</h2>
+              <div className="adv-faq">
+                {AD_FAQ.map((f) => (
+                  <details key={f.q}>
+                    <summary>{f.q}</summary>
+                    <p>{f.a}</p>
+                  </details>
+                ))}
+              </div>
+            </section>
+
+            {/* Who's behind it */}
+            <section className="adv-section adv-owner">
+              <img
+                className="maker-avatar"
+                src="/creator.jpg"
+                alt="Raunak, who runs Packwise"
+                width="56"
+                height="56"
+                loading="lazy"
+              />
+              <p>
+                Packwise is built and run by <b>Raunak</b>. You deal with me directly. Every ad is
+                checked by hand before it goes live.
               </p>
+            </section>
+
+            <div className="adv-final-cta">
+              <a href="#plans" className="btn btn-primary btn-lg">Start your free week</a>
             </div>
           </>
         )}
@@ -183,7 +295,7 @@ export default function Advertise({ onBack }) {
         {stage === 'form' && plan && (
           <form onSubmit={submit} noValidate>
             <div className="step-head">
-              <span className="eyebrow">{plan.name} plan · {formatPrice(plan.price)} / {plan.period}</span>
+              <span className="eyebrow">{plan.name} plan · first week free, then {formatPrice(plan.price)} / {plan.period}</span>
               <h1 className="h1">Tell us about your business.</h1>
               <p>We&apos;ll use this to build your card and decide which trips it appears on.</p>
             </div>
@@ -280,8 +392,8 @@ export default function Advertise({ onBack }) {
               {sending ? 'Sending…' : 'Send request'}
             </button>
             <p className="xs muted form-hint">
-              This doesn&apos;t charge you. We&apos;ll reply with a payment link once we&apos;ve
-              checked your request.
+              Nothing to pay now. Your first week is free; after that, pay by UPI only if you want to
+              continue. Cancel anytime.
             </p>
           </form>
         )}
@@ -293,19 +405,19 @@ export default function Advertise({ onBack }) {
             <h1 className="h1">{delivered ? 'Request sent.' : 'One more step.'}</h1>
             {delivered ? (
               <p>
-                Thanks — we have your request. We&apos;ll review it and get back to you on the
-                number or link you gave, with a payment link.
+                Thanks — we have your request. We&apos;ll get back to you very soon and start your
+                advertisement, with your first week free.
               </p>
             ) : CONTACT_WHATSAPP ? (
               <p>
                 {FORM_KEY ? 'We could not send this automatically. ' : ''}
-                <b>Press send in WhatsApp</b> to finish — we&apos;ll review it and reply with a
-                payment link.
+                <b>Press send in WhatsApp</b> to finish — we&apos;ll start your advertisement, with your
+                first week free.
               </p>
             ) : (
               <p>
-                Copy this request and send it to us. We&apos;ll review it and reply with a
-                payment link.
+                Copy this request and send it to us. We&apos;ll start your advertisement, with your
+                first week free.
               </p>
             )}
 
