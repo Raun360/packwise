@@ -14,6 +14,10 @@ import { track, EVENTS } from './lib/analytics.js';
 
 const STORAGE_KEY = 'packwise:v1';
 
+/** The Advertise page has its own address so analytics can count it and it can be shared. */
+const ADVERTISE_PATH = '/advertise';
+const onAdvertisePath = () => typeof window !== 'undefined' && window.location.pathname === ADVERTISE_PATH;
+
 const NAV_ITEMS = [
   { label: 'Popular trips', link: 'popular_trips', section: 'popular' },
   { label: 'How it works', link: 'how_it_works', section: 'how' },
@@ -35,7 +39,7 @@ function loadSaved() {
 }
 
 export default function App() {
-  const [view, setView] = useState('landing'); // landing | planner | loading | results
+  const [view, setView] = useState(() => (onAdvertisePath() ? 'advertise' : 'landing')); // landing | advertise | planner | loading | results
   const [trip, setTrip] = useState(createEmptyTrip);
   const [plan, setPlan] = useState(null);
   const [toast, setToast] = useState('');
@@ -61,7 +65,8 @@ export default function App() {
       weatherRef.current = saved.climates || null;
       setTrip(saved.trip);
       setPlan(rebuild(fresh, items));
-      setView('results');
+      // Someone opening /advertise directly should land on Advertise, not their old list.
+      if (!onAdvertisePath()) setView('results');
     } catch {
       localStorage.removeItem(STORAGE_KEY);
     }
@@ -194,6 +199,22 @@ export default function App() {
   };
 
   const showNav = view === 'landing' || view === 'advertise';
+
+  // Keep the address bar in step with the Advertise page. A pushState is what
+  // Vercel Analytics and GA4 count as a page view, so /advertise gets its own count.
+  useEffect(() => {
+    if (view === 'advertise' && !onAdvertisePath()) window.history.pushState(null, '', ADVERTISE_PATH);
+    else if (view !== 'advertise' && onAdvertisePath()) window.history.pushState(null, '', '/');
+  }, [view]);
+
+  // Browser Back/Forward between / and /advertise.
+  useEffect(() => {
+    const onPop = () => {
+      setView((v) => (onAdvertisePath() ? 'advertise' : v === 'advertise' ? 'landing' : v));
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
 
   // Close the mobile menu whenever the screen changes or Escape is pressed.
   useEffect(() => { setMenuOpen(false); }, [view]);
